@@ -1,6 +1,6 @@
-<manifest package="com.sensoros" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest  xmlns:android="http://schemas.android.com/apk/res/android">
     <application android:label="SensorOS" android:allowBackup="true">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
