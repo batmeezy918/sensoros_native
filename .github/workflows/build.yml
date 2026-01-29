@@ -1,38 +1,32 @@
-name: RTAG Android Build
+name: SensorOS Cloud Build
 
 on:
   push:
-    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Install Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-    - name: Install Android SDK
-      uses: android-actions/setup-android@v3
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-    # SELF HEAL: regenerate gradle wrapper if missing
-    - name: Ensure Gradle Wrapper
-      run: |
-        if [ ! -f gradlew ]; then
-          gradle wrapper
-        fi
-        chmod +x gradlew
+      - name: Build APK
+        run: |
+          chmod +x gradlew || true
+          ./gradlew assembleRelease || gradle assembleRelease
 
-    - name: Build APK
-      run: ./gradlew assembleRelease
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: SensorOS-APK
-        path: app/build/outputs/apk/release/app-release.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SensorOS-APK
+          path: app/build/outputs/apk/release/*.apk
